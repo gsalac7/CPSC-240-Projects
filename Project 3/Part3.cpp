@@ -12,6 +12,16 @@ short age;
 char gender;
 short amount;
 
+void displayMenu() {
+	cout << "-----------Ace Club-----------" << endl;
+	cout << "Male" << endl;
+	cout << "\tAdult(age > 19)...........$100" << endl;
+	cout << "\tTeenager(age 13 - 19).....$75" << endl;
+	cout << "Female" << endl;
+	cout << "\tAdult(age > 19)...........$80" << endl;
+	cout << "\tTeenager(age 13 - 19).....$85" << endl;
+}
+
 void readData() {
 	cout << "Enter value for gender: ";
 	cin >> gender;
@@ -28,6 +38,7 @@ void displayAmount() {
 }
 
 int main() {
+	displayMenu();
 	_asm {
 		call	readData;		//read data first
 		mov		ax, age;		//assign age to ax register 
