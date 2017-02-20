@@ -3,7 +3,8 @@
 using namespace std;
 
 char choice, YesNo;
-int x, y, z, correctAns = 0, wrongAns = 0;
+int x, y, z, correctAns, wrongAns;
+
 void generateXY() {
 	srand(time(0));
 	x = rand() % 100;
@@ -16,6 +17,11 @@ void displayMenu() {
 	cout << "b.\tPractice Subtraction" << endl;
 	cout << "\t\tEnter your choice: ";
 	cin >> choice;
+}
+
+void displayFinished() {
+	cout << "\t\tAre you done(y/n) ";
+	cin >> YesNo;
 }
 
 void displayCorrect() {
@@ -48,8 +54,15 @@ void displaySubQuestion() {
 	cin >> z;
 }
 
+void bye() {
+	cout << "\t\t\tHave a nice day" << endl;
+}
+
 int main() {
 	_asm {
+	start:
+		mov correctAns, 0;
+		mov wrongAns, 0;
 		call displayMenu;
 		cmp choice, 'a';
 		je addition;
@@ -76,22 +89,33 @@ int main() {
 	correct:
 		call displayCorrect;
 		inc correctAns;
-		jmp continue2;
+		cmp choice, 'a';
+		je continueAdd;
+		jmp continueSub;
 	wrong:
 		call displayWrong;
 		inc wrongAns;
-		jmp continue2;
-	continue2:
-		call continue1;
 		cmp choice, 'a';
+		je continueAdd;
+		jmp continueSub;
+	continueAdd:
+		call continue1;
 		cmp YesNo, 'y';
 		je addition;
-		cmp choice, 'b';
+		jmp done;
+	continueSub:
+		call continue1;
 		cmp YesNo, 'y';
 		je subtraction;
 		jmp done;
 	done:
 		call displayRightWrong;
+		call displayFinished;
+		cmp YesNo, 'n';
+		je start;
+		jmp finished;
+	finished:
+		call bye;
 	}
 	return 0;
 }
