@@ -2,18 +2,45 @@
 
 using namespace std;
 
-char c[10];
 int i = 0, yesCounter = 0, noCounter = 0;
+char c;
+void printStar() {
+	cout << "*";
+}
 void readData() {
-	cin >> c[i];
+	cin >> c;
 }
 
 void yesVotes() {
-	cout << "No. of YES votes = " << yesCounter << endl;
+	cout << "No. of YES votes = " << yesCounter << " ";
+	_asm {
+		mov yesCounter, eax;
+	forloop:
+		call printStar;
+		inc i;
+		cmp i, eax;
+		je done;
+		jmp forloop;
+	done:
+		mov i, 0;
+	}
+	cout << endl;
 }
 
 void noVotes() {
-	cout << "No. of NO votes = " << noCounter << endl;
+	cout << "No. of NO votes = " << noCounter << " ";
+	_asm {
+		mov noCounter, eax;
+	forloop:
+		call printStar;
+		inc i;
+		cmp i, eax;
+		je done;
+		jmp forloop;
+	done:
+		mov i, 0;
+	}
+	cout << endl;
 }
 
 int main() {
@@ -21,23 +48,27 @@ int main() {
 	_asm {
 	forloop:
 		call readData;
-		inc i;
-		cmp i, 10;
-		jne forloop;
-	done:
-		mov i, 0;
-		cmp c[i], 'y';
+		cmp c, 'y';
 		je addY;
-		cmp c[i], 'n';
-		je addN;
+		jmp addN;
 	addY:
 		inc yesCounter;
-		inc, i;
-		jmp done;
+		inc i;
+		cmp i, 10;
+		je done;
+		jmp forloop;
+
 	addN:
 		inc noCounter;
-		inc, i;
-		jmp done;
+		inc i;
+		cmp i, 10;
+		je done;
+		jmp forloop;
+
+	done:	
+		call yesVotes;
+		call noVotes;
+
 	}
 
 	return 0;
