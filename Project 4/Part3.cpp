@@ -1,3 +1,8 @@
+/*Angelo Salac
+Michael Busslinger
+2/23/17
+Project 4, Part 3
+*/
 #include <iostream>
 #include <ctime>
 using namespace std;
@@ -60,62 +65,62 @@ void bye() {
 
 int main() {
 	_asm {
-	start:
-		mov correctAns, 0;
-		mov wrongAns, 0;
-		call displayMenu;
-		cmp choice, 'a';
-		je addition;
-		jmp subtraction;
+	start: //beginning label
+		mov		correctAns, 0;
+		mov		wrongAns, 0; //set the counters
+		call	displayMenu; //display the menu first
+		cmp		choice, 'a'; //compare choice with a
+		je		addition; //if its a, then addition
+		jmp		subtraction; //else subtraction
 
 	addition:
-		call generateXY;
-		call displayAddQuestion;
-		mov eax, x;
-		add eax, y;
-		cmp eax, z;
-		je correct;
-		jne wrong;
+		call	generateXY; //generate x and y
+		call	displayAddQuestion; //ask the question
+		mov		eax, x; //move x to eax register
+		add		eax, y; //add y to x
+		cmp		eax, z; //compare user answer to x + y
+		je		correct; //if equal go to correct
+		jne		wrong; //else go to wrong
 
 	subtraction:
-		call generateXY;
-		call displaySubQuestion;
-		mov eax, x;
-		sub eax, y;
-		cmp eax, z;
-		je correct;
-		jne wrong;
+		call	generateXY; //generate x and y
+		call	displaySubQuestion; //ask question
+		mov		eax, x; // move x to eax register
+		sub		eax, y; //add y to x
+		cmp		eax, z; //compare user answer to x and y
+		je		correct; //if equal go to correct
+		jne		wrong; //else go to wrong
 
 	correct:
-		call displayCorrect;
-		inc correctAns;
-		cmp choice, 'a';
-		je continueAdd;
-		jmp continueSub;
-	wrong:
-		call displayWrong;
-		inc wrongAns;
-		cmp choice, 'a';
-		je continueAdd;
-		jmp continueSub;
+		call	displayCorrect; //display correct
+		inc		correctAns; //add 1 to cCounter
+		cmp		choice, 'a'; //if the choice is a
+		je		continueAdd; //go to continue addition
+		jmp		continueSub; //else go to continue subtractions
+	wrong: 
+		call	displayWrong; //display wrong
+		inc		wrongAns; //add 1 to wCounter
+		cmp		choice, 'a'; //if choice is a 
+		je		continueAdd; //go to continue addition
+		jmp		continueSub; //else go to continue subtractions
 	continueAdd:
-		call continue1;
-		cmp YesNo, 'y';
-		je addition;
-		jmp done;
+		call	continue1; //call continue
+		cmp		YesNo, 'y'; //continue
+		je		addition; //go to addition
+		jmp		done;
 	continueSub:
-		call continue1;
-		cmp YesNo, 'y';
-		je subtraction;
-		jmp done;
+		call	continue1; //call continue
+		cmp		YesNo, 'y'; //continue
+		je		subtraction; //repeat sub
+		jmp		done;
 	done:
-		call displayRightWrong;
-		call displayFinished;
-		cmp YesNo, 'n';
-		je start;
-		jmp finished;
+		call	displayRightWrong; //display the final total scores
+		call	displayFinished; //ask if finished
+		cmp		YesNo, 'n'; //if no repeat
+		je		start; //go back to menu and ask user again
+		jmp		finished;
 	finished:
-		call bye;
+		call	bye; //done
 	}
 	return 0;
 }
