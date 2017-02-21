@@ -4,42 +4,45 @@ using namespace std;
 
 int i = 0, yesCounter = 0, noCounter = 0;
 char c;
+
 void printStar() {
 	cout << "*";
 }
 void readData() {
-	cin >> c;
+	cin.get(c);
 }
 
 void yesVotes() {
 	cout << "No. of YES votes = " << yesCounter << " ";
 	_asm {
-		mov yesCounter, eax;
+		mov i, 0;
 	forloop:
 		call printStar;
 		inc i;
-		cmp i, eax;
-		je done;
-		jmp forloop;
+		mov eax, i;
+		cmp eax, yesCounter;
+		jne forloop;
 	done:
-		mov i, 0;
+
 	}
+
 	cout << endl;
 }
 
 void noVotes() {
 	cout << "No. of NO votes = " << noCounter << " ";
 	_asm {
-		mov noCounter, eax;
+		mov i, 0;
 	forloop:
 		call printStar;
 		inc i;
-		cmp i, eax;
-		je done;
-		jmp forloop;
+		mov eax, i;
+		cmp eax, noCounter;
+		jne forloop;
 	done:
-		mov i, 0;
+
 	}
+
 	cout << endl;
 }
 
@@ -65,10 +68,9 @@ int main() {
 		je done;
 		jmp forloop;
 
-	done:	
+	done:
 		call yesVotes;
 		call noVotes;
-
 	}
 
 	return 0;
