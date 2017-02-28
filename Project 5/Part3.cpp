@@ -6,8 +6,7 @@ Project 5, Part 3
 #include <iostream>
 
 using namespace std;
-short a = 5, b = 7;
-short bin, counter = 0;
+short bin, counter = 0, i = 0, l;
 
 void countOnes() {
 	short x = 1;
@@ -17,7 +16,7 @@ void countOnes() {
 		if (t == 1) { //every time we encounter a 1, then increment the counter
 			counter++;
 		}
-		bin = bin >> 1; 
+		bin = bin >> 1;
 	}
 	cout << counter << " sprinklers are ON" << endl;
 }
@@ -55,18 +54,60 @@ void displayBin() {
 	cout << endl;
 }
 
+void Endline() {
+	cout << endl;
+}
+
+void outputOne() {
+	cout << i << " ";
+}
+
+void display() {
+	cout << counter << " Sprinklers are ON" << endl;
+}
+
 int main() {
 	_asm {
 		mov		ax, 0110101000101111b; //assign random value to ax
-		mov		bin, ax;			//move ax to bin
-		call	displayBin;			//call display Bin function
-		mov		ax, 0110101000101111b;
 		mov		bin, ax;
-		call	countOnes;
-		mov		ax, 0110101000101111b;
+
+	displayBinary:
+		cmp		i, 16;
+		je		done;
+		mov		ax, bin;
+		inc		i;
+		shr		bin, 1;
+		and		ax, 1;
+		cmp		ax, 0;
+		je		sprinklers;
+		jmp		displayBinary;
+	sprinklers:
+		call	outputOne;
+		jmp		displayBinary;
+	
+	done:
+		call	Endline;
+		mov		i, 0;
+		mov		ax, 0110101000101111b; //assign random value to ax
 		mov		bin, ax;
-		call	displaySprinklers;
+
+	Counter:
+		cmp		i, 16;
+		je		finished;
+		mov		ax, bin;
+		inc		i;
+		shr		bin, 1;
+		and		ax, 1;
+		cmp		ax, 1;
+		je		AddOne;
+		jmp		Counter;
+	AddOne:
+		inc		counter;
+		jmp		Counter;
+	finished:
+		call	display;
 	}
 
+	system("pause");
 	return 0;
 }
