@@ -31,7 +31,7 @@ void displayRED() {
 int main() {
 	_asm {
 		mov ebx, 0;
-		
+
 		mov i, 0;
 
 	loop1: //add all t shirts
@@ -46,17 +46,29 @@ int main() {
 		call displayTotalShirts;
 
 
-		mov ebx, 4;
+		mov ebx, 4; //set ebx to 4
 		mov i, 0;
-		
+
 	loop2:
-		cmp i, 9;
+		cmp i, 3;
+		je nextloop2;
+		mov ecx, [a + ebx]; //now ecx starts at a + 4
+		add totalMedium, ecx;
+		add ebx, 12;
+		inc i;
+		jmp loop2;
+	nextloop2:
+		mov i, 0;
+
+		mov ebx, 40;
+	nextloop3:
+		cmp i, 3;
 		je done2;
 		mov ecx, [a + ebx];
 		add totalMedium, ecx;
-		add ebx, 16;
+		add ebx, 12;
 		inc i;
-		jmp loop2;
+		jmp nextloop3;
 	done2:
 		call displayMedium;
 
@@ -90,15 +102,15 @@ int main() {
 
 	nextLoop:
 		mov i, 0;
-		mov ebx, 40;
-	nextLoop2:
+		mov ebx, 36;
+	nextLoop4:
 		cmp i, 3;
 		je done4;
 		mov ecx, [a + ebx];
 		add totalRED, ecx;
 		add ebx, 4;
 		inc i;
-		jmp nextloop2;
+		jmp nextloop4;
 
 	done4:
 		call displayRED;
